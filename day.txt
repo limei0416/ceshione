@@ -1,0 +1,141 @@
+react
+
+           生命周期
+      一 、初始化
+1、getDefaultProps()
+   设置默认的props，也可以用dufaultProps设置组件的默认属性.
+
+2、getInitialState()
+在使用es6的class语法时是没有这个钩子函数的，可以直接在constructor中定义this.state。此时可以访问this.props
+
+3、componentWillMount()
+组件初始化时只调用，以后组件更新不调用，整个生命周期只调用一次，此时可以修改state。
+
+4、 render()
+react最重要的步骤，创建虚拟dom，进行diff算法，更新dom树都在此进行。此时就不能更改state了。
+
+5、componentDidMount()
+组件渲染之后调用，只调用一次。
+
+      二 、更新
+6、componentWillReceiveProps(nextProps)
+组件初始化时不调用，组件接受新的props时调用。
+
+7、shouldComponentUpdate(nextProps, nextState)
+react性能优化非常重要的一环。组件接受新的state或者props时调用，
+我们可以设置在此对比前后两个props和state是否相同，如果相同则返回false阻止更新，
+因为相同的属性状态一定会生成相同的dom树，这样就不需要创造新的dom树和旧的dom树进行diff算法对比，
+节省大量性能，尤其是在dom结构复杂的时候
+
+8、componentWillUpdata(nextProps, nextState)
+组件初始化时不调用，只有在组件将要更新时才调用，此时可以修改state
+
+9、render()
+组件渲染
+
+10、componentDidUpdate()
+组件初始化时不调用，组件更新完成后调用，此时可以获取dom节点。
+
+    三 、卸载
+11、componentWillUnmount()
+组件将要卸载时调用，一些事件监听和定时器需要在此时清除。
+
+
+React声明周期 
+   componentDidMount()               组件渲染完成
+   componentWillMount()               组件将要挂载
+   componentWillUpdate()              数据将要更新前
+   componentDidUpdate()              数据更新结束
+   shouldComponentUpdate()        数据应该更新么？ false  阻止组件更新渲染  true 允许组件重新渲染
+   componentWillUnmount()          组件将要卸载
+   componentWillReceiveProps()    组件接受新的props时调用
+   render()                                         组件渲染
+
+
+2019-04-02 11:02:45
+0402
+组件通信
+    组件
+	1、函数组件（无状态组件）
+	2、类组件（有状态组件）
+	注意：组件名称必须以大写字母开头
+     组件通信
+         子传父
+	子组件：使用this.props.事件名（参数）
+	父组件：<组件  事件名={处理函数}>
+	父组件的处理函数中的参数  就是子组件传递过来的数据
+          vue
+	在使用的子组件上自定义一个事件  <ComA  :on-show={xxx}/>
+	子组件中   使用$emit(‘on-show’,值）
+      多层嵌套
+           引入  prop-types
+           父组件
+	声明 childContextTypes  进行数据验证
+	声明  getChildContext  提供数据和方法  供下级组件使用
+            子组件
+	声明 contextTypes 进行数据验证
+	在事件中 使用this.context.方法名（上级组件 chlidContextTypes中声明的方法）
+
+
+redux
+ cnpm install redux
+ cnpm install react-redux
+什么是redux 数据状态管理，就是说我们项目中有很多组件需要共享数据，这时候可以使用redux
+搭建  我一般都会创建3个文件夹。
+action 里面我会定义 方法。这个方法用来触发reducers里面的处理逻辑。
+ 因为方法里面 会返回两个字段，一个type  用来表示一个字符串， 还有一个data，就是调用actioni 面的方法时传递的参数
+reducer 定义store里面的数据和处理逻辑。
+处理逻辑通常使用 switch case 来选择对应的action传递过来的type 类型进行处理  
+store 里面会导出 reducer 封装好的数据
+使用数据：
+在 index.js 里面使用 provider 这个组件，将根组件和我们引入的store 联系起来。这样根组件中的所有组件都可以使用redux
+在具体的某个组件中，引入 connect 方法，该方法用来将 mapStateToProps mapDispatchToProps 和当前组件关联起来
+mapStateToProps 用来引入数据(store)  mapDispatchToProps 用来引入 action里面的方法
+使用this.props.store的名称 来获取redux里面的数据   
+使用 this.props.actios的名称 来获取action里面的方法
+
+
+
+
+cookie 
+语法  document.cookie = 'key=value;exprese='过期时间.toGMTString();'
+escape(value)  js 编码  unescape() 解码
+什么是cookie 
+它类似于本地存储。
+不过存的值比较小 4kb左右,
+而且他可以设置过期时间。
+接口请求是可以被携带到服务器，
+使用场景，7天免登录  
+
+
+1、安装Andt
+	cnpm install antd --save
+      index.js粘入以下代码
+	// 由于 antd 组件的默认文案是英文，所以需要修改为中文
+	{import zhCN from 'antd/lib/locale-provider/zh_CN';
+	import moment from 'moment';
+	import 'moment/locale/zh-cn';
+	import "antd/dist/antd.css";
+	moment.locale('zh-cn');}
+    组件中写入
+	import { LocaleProvider, DatePicker, message } from 'antd';//需要谁写入谁
+2、多层嵌套所需安装
+	cnpm install prop-types
+      组件中写入
+	import  propType  from 'prop-type';
+3、 兄弟组件
+        	cnpm install events
+        	创建 event.js
+	        import {EventEmitter} from "events"
+	        export default new EventEmitter();导出 emitter 对象
+4、路由
+	cnpm install react-router-dom
+5、路由懒加载
+	cnpm install react-loadable
+6、axios
+	cnpm isntall axios --save
+7、swiper
+	cnpm install --save swiper
+8、redux
+	cnpm install redux
+	cnpm install react-redux
